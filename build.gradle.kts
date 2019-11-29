@@ -15,11 +15,15 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("net.dv8tion:JDA:4.0.0_67") {
+		exclude(module = "opus-java")
+	}
 }
 
 tasks.withType<KotlinCompile> {
