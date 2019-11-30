@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("application")
+	kotlin("kapt") version "1.3.50"
 	kotlin("jvm") version "1.3.50"
 }
 
@@ -16,6 +17,7 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 repositories {
 	mavenCentral()
 	jcenter()
+	maven("https://jitpack.io")
 }
 
 dependencies {
@@ -24,6 +26,10 @@ dependencies {
 	implementation("net.dv8tion:JDA:4.0.0_67") {
 		exclude(module = "opus-java")
 	}
+	implementation("com.github.kittinunf.fuel:fuel:1.3.1")
+	implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.0")
+	implementation("com.fasterxml.jackson.core:jackson-annotations:2.9.0")
+	implementation("com.taskworld.kraph:kraph:0.4.1")
 }
 
 tasks.withType<KotlinCompile> {
