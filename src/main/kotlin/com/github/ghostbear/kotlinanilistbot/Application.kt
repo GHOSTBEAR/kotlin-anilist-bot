@@ -21,8 +21,6 @@ fun main() {
 
 class Application : ListenerAdapter() {
 
-	val url = "https://graphql.anilist.co/"
-
 	override fun onMessageReceived(event: MessageReceivedEvent) {
 		val message = event.message
 		val author = event.author
@@ -47,7 +45,6 @@ class Application : ListenerAdapter() {
 
 		if (type != null) {
 			text = context.substring(1, context.length - 1)
-
 			searchMedia(text, type) { media ->
 				message.channel.sendMessage("Here is what I found https://anilist.co/${media.type.toString().toLowerCase()}/${media.id}").queue()
 			}
@@ -66,9 +63,12 @@ class Application : ListenerAdapter() {
 			}
 		}
 
+		postRequest("https://graphql.anilist.co/", query.toRequestString(), listener)
+	}
 
+	fun postRequest(url: String, body: String, listener: (Media) -> Unit) {
 		url.httpPost().header("content-type" to "application/json", "Accept" to "application/json")
-				.body(query.toRequestString()).responseObject<Response<Data<Page<Media>>>> { request, response, result ->
+				.body(body).responseObject<Response<Data<Page<Media>>>> { request, response, result ->
 					listener.invoke(result.get().data.page.list.first())
 				}
 	}
