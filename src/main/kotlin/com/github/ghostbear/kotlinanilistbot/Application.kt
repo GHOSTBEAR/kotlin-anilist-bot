@@ -43,9 +43,9 @@ class Application : ListenerAdapter() {
 			type = MediaType.MANGA
 		}
 
-		if (type != null) {
+		type?.let {
 			text = context.substring(1, context.length - 1)
-			searchMedia(text, type) { media ->
+			searchMedia(text!!, type) { media ->
 				message.channel.sendMessage("Here is what I found https://anilist.co/${media.type.toString().toLowerCase()}/${media.id}").queue()
 			}
 		}
