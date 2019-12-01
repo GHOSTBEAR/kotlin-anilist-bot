@@ -3,7 +3,7 @@ package com.github.ghostbear.kotlinanilistbot
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Response<T>(
-        @JsonProperty("data") var data: T
+        @JsonProperty("data") var data: Data<T>
 )
 
 data class Data<T>(

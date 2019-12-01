@@ -33,12 +33,10 @@ class Application : ListenerAdapter() {
 			return
 		}
 
-		//language=RegExp
 		if (context.matches(Regex("^\\{.*}$"))) {
 			type = MediaType.ANIME
 		}
 
-		//language=RegExp
 		if (context.matches(Regex("^<.*>"))) {
 			type = MediaType.MANGA
 		}
@@ -46,7 +44,10 @@ class Application : ListenerAdapter() {
 		type?.let {
 			text = context.substring(1, context.length - 1)
 			searchMedia(text!!, type) { media ->
-				message.channel.sendMessage("Here is what I found https://anilist.co/${media.type.toString().toLowerCase()}/${media.id}").queue()
+				val mediaId = media.id
+				val mediaType = media.type.toString().toLowerCase()
+				val messageString = "Here is what I found https://anilist.co/${mediaType}/${mediaId}"
+				message.channel.sendMessage(messageString).queue()
 			}
 		}
 	}
@@ -68,7 +69,7 @@ class Application : ListenerAdapter() {
 
 	fun postRequest(url: String, body: String, listener: (Media) -> Unit) {
 		url.httpPost().header("content-type" to "application/json", "Accept" to "application/json")
-				.body(body).responseObject<Response<Data<Page<Media>>>> { request, response, result ->
+				.body(body).responseObject<Response<Page<Media>>> { request, response, result ->
 					listener.invoke(result.get().data.page.list.first())
 				}
 	}
