@@ -5,23 +5,21 @@ import com.github.kittinunf.fuel.jackson.responseObject
 import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.entities.Message
 
-interface CommandChain {
-    fun execute(message: Message)
-}
-
-abstract class DiscordCommandChain(
+abstract class CommandChain(
         var chain: CommandChain?
-) : CommandChain {
+){
 
-    fun chain(command: DiscordCommandChain): DiscordCommandChain {
+    fun chain(command: CommandChain): CommandChain {
         this.chain = command
         return this
     }
 
     abstract val patterns: ArrayList<Regex>
+
+    abstract fun execute(message: Message)
 }
 
-class MediaCommand(chain: CommandChain? = null) : DiscordCommandChain(chain) {
+class MediaCommand(chain: CommandChain? = null) : CommandChain(chain) {
 
     override val patterns: ArrayList<Regex> = arrayListOf(Regex("^\\{.*}$"), Regex("^<.*>"))
 

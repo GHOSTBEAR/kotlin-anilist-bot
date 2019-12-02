@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 
 class SearchListener : ListenerAdapter() {
 
-    private var commandChain: DiscordCommandChain
+    private var commandChain: CommandChain
 
     init {
         commandChain = MediaCommand()
