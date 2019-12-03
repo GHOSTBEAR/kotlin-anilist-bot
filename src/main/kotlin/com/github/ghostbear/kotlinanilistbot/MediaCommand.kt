@@ -5,20 +5,6 @@ import com.github.kittinunf.fuel.jackson.responseObject
 import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.entities.Message
 
-abstract class CommandChain(
-        var chain: CommandChain?
-){
-
-    fun chain(command: CommandChain): CommandChain {
-        this.chain = command
-        return this
-    }
-
-    abstract val patterns: ArrayList<Regex>
-
-    abstract fun execute(message: Message)
-}
-
 class MediaCommand(chain: CommandChain? = null) : CommandChain(chain) {
 
     override val patterns: ArrayList<Regex> = arrayListOf(Regex("^\\{.*}$"), Regex("^<.*>"))
@@ -35,7 +21,7 @@ class MediaCommand(chain: CommandChain? = null) : CommandChain(chain) {
 
         if (mediaType != null) {
             context = context.substring(1, context.length - 1)
-            "https://graphql.anilist.co/".httpPost().header("content-type" to "application/json", "Accept" to "application/json")
+            AniList.url.httpPost().header(AniList.headers)
                     .body(query(mediaType, context))
                     .responseObject<Response<Page<Media>>> { _, _, result ->
                         val media = result.get().data.page.list.first()
