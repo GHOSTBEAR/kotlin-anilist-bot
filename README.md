@@ -18,8 +18,8 @@ When it receive the response it is parsed and then a message will be created to 
 
 ## TODO
 - [x] Add Media search
-- [X] Add Staff search
-- [ ] Add Character search
+- [ ] Add Staff search
+- [X] Add Character search
 - [ ] Add Studio search
 - [X] Use Design Pattern
 - [ ] Docker
