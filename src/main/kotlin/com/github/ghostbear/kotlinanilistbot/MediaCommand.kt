@@ -4,6 +4,8 @@ import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.jackson.responseObject
 import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.entities.Message
+import com.github.ghostbear.kotlinanilistbot.AniList.headers as headers
+import com.github.ghostbear.kotlinanilistbot.AniList.url as url
 
 class MediaCommand(chain: CommandChain? = null) : CommandChain(chain) {
 
@@ -21,15 +23,14 @@ class MediaCommand(chain: CommandChain? = null) : CommandChain(chain) {
 
         if (mediaType != null) {
             context = context.substring(1, context.length - 1)
-            AniList.url.httpPost().header(AniList.headers)
+            url.httpPost().header(headers)
                     .body(query(mediaType, context))
                     .responseObject<Response<Page<Media>>> { _, _, result ->
                         val media = result.get().data.page.list.first()
-                        val id = media.id
-                        val type = media.type.toString().toLowerCase()
-                        val reply = "Here is what I found https://anilist.co/${type}/${id}"
+                        var url = media.siteUrl
+                        val reply = "Here is what I found $url"
                         message.channel.sendMessage(reply).queue {
-                            println("Message successfully sent (id: $id, type: $type)")
+                            println("Message successfully sent ($url)")
                         }
                     }
         } else {
@@ -42,8 +43,7 @@ class MediaCommand(chain: CommandChain? = null) : CommandChain(chain) {
             query {
                 fieldObject("Page", mapOf("perPage" to 5)) {
                     fieldObject("media", mapOf("search" to context, "type" to mediaType)) {
-                        field("id")
-                        field("type")
+                        field("siteUrl")
                     }
                 }
             }

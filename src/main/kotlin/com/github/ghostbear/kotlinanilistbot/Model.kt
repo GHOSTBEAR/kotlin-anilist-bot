@@ -10,9 +10,17 @@ data class Data<T>(
         @JsonProperty("Page") var page: T
 )
 
-data class Page<T>(
-        @JsonProperty("media") var list: List<T> = ArrayList()
-)
+data class Page<T: Any>(
+        private @JsonProperty("media") var media: List<T>?,
+        private @JsonProperty("characters") var characters: List<T>?
+) {
+    val list: List<T>
+    get() {
+        media?.let { return it }
+        characters?.let { return it }
+        return emptyList()
+    }
+}
 
 enum class MediaType {
     ANIME, MANGA
@@ -29,7 +37,12 @@ enum class MediaSort {
 data class Media(
         @JsonProperty("id") var id: Int? = -1,
         @JsonProperty("type") var type: MediaType? = MediaType.ANIME,
-        @JsonProperty("title") var title: Title?
+        @JsonProperty("title") var title: Title?,
+        @JsonProperty("siteUrl") var siteUrl: String?
+)
+
+data class Character(
+        @JsonProperty("siteUrl") var siteUrl: String?
 )
 
 data class Title(

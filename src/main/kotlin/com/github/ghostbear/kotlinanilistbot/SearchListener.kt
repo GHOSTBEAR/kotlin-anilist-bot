@@ -9,6 +9,7 @@ class SearchListener : ListenerAdapter() {
 
     init {
         commandChain = MediaCommand()
+        commandChain = CharacterCommand().chain(commandChain)
     }
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
