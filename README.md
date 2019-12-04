@@ -16,6 +16,13 @@ If the message does it will first set if it is a ANIME or MANGA query, then it w
 After that it will start the search by making a post call to AniList:s GraphQL API. 
 When it receive the response it is parsed and then a message will be created to reply to the user.
 
+## Commands
+| Name      | Syntax        | Description                   | Example         |
+| :---      | :-----------: | :---------------------------: | :---            |
+| Anime     | {*text here*} | Used to search for media      | {*one piece*}   |
+| Manga     | <*text here*> |                               | <*one piece*>   |
+| Character | (*text here*) | Used to search for characters | (luffy)         |
+
 ## TODO
 - [x] Add Media search
 - [ ] Add Staff search
