@@ -38,9 +38,7 @@ abstract class MediaCommand : ICommand, GraphRequest() {
                     .setDescription(Jsoup.parse(description).text())
                     .setColor(Color.decode(color))
                     .build()
-            message.channel.sendMessage(embed).queue {
-                println("[Media] Message successfully sent, media $title ($url)")
-            }
+            sendMessage(message.channel, embed, "[Media] Message successfully sent, media $title ($url)")
         }
     }
 

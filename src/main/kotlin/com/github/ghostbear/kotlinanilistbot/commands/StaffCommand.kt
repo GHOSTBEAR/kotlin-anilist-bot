@@ -32,9 +32,7 @@ class StaffCommand : ICommand, GraphRequest() {
                     .setDescription(if (!description.isNullOrEmpty()) Jsoup.parse(description).text() else "No description")
                     .setThumbnail(image ?: "")
                     .build()
-            message.channel.sendMessage(embed).queue {
-                println("[Staff] Message successfully sent, staff $name ($url)")
-            }
+            sendMessage(message.channel, embed, "[Staff] Message successfully sent, staff $name ($url)")
         }
     }
 

@@ -32,9 +32,7 @@ class CharacterCommand : ICommand, GraphRequest() {
                     .setDescription(Jsoup.parse(description).text())
                     .setThumbnail(image)
                     .build()
-            message.channel.sendMessage(embed).queue {
-                println("[Character] Message successfully sent, character $name ($url)")
-            }
+            sendMessage(message.channel, embed, "[Character] Message successfully sent, character $name ($url)")
         }
 
     }
