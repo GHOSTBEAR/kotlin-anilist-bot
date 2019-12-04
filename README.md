@@ -23,11 +23,12 @@ When it receive the response it is parsed and then a message will be created to 
 | Manga     | <*text here*>     |                               | <*one piece*>     |
 | Character | (*text here*)     | Used to search for characters | (luffy)           |
 | Staff     | \[*text here*\]   | Used to search for staff      | (eiichiro oda)    |
+| Studio    | >*text here*<     | Used to search for studios    | >toei animation<  |
 
 ## TODO
 - [x] Add Media search
 - [x] Add Staff search
 - [X] Add Character search
-- [ ] Add Studio search
+- [x] Add Studio search
 - [X] Use Design Pattern
 - [ ] Docker

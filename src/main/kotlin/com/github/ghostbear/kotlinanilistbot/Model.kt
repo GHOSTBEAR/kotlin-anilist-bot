@@ -13,13 +13,15 @@ data class Data<T>(
 data class Page<T: Any>(
         private @JsonProperty("media") var media: List<T>?,
         private @JsonProperty("characters") var characters: List<T>?,
-        private @JsonProperty("staff") var staff: List<T>?
+        private @JsonProperty("staff") var staff: List<T>?,
+        private @JsonProperty("studios") var studios: List<T>?
 ) {
     val list: List<T>
     get() {
         media?.let { return it }
         characters?.let { return it }
         staff?.let { return it }
+        studios?.let { return it }
         return emptyList()
     }
 }
@@ -48,6 +50,10 @@ data class Character(
 )
 
 data class Staff(
+        @JsonProperty("siteUrl") var siteUrl: String?
+)
+
+data class Studio(
         @JsonProperty("siteUrl") var siteUrl: String?
 )
 
