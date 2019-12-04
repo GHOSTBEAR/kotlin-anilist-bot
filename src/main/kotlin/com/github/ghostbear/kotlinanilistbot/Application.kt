@@ -1,5 +1,6 @@
 package com.github.ghostbear.kotlinanilistbot
 
+import com.github.ghostbear.kotlinanilistbot.commands.SearchListener
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 

@@ -1,5 +1,6 @@
-package com.github.ghostbear.kotlinanilistbot
+package com.github.ghostbear.kotlinanilistbot.commands
 
+import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 

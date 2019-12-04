@@ -1,5 +1,12 @@
-package com.github.ghostbear.kotlinanilistbot
+package com.github.ghostbear.kotlinanilistbot.commands.base
 
+import com.github.ghostbear.kotlinanilistbot.Media
+import com.github.ghostbear.kotlinanilistbot.MediaType
+import com.github.ghostbear.kotlinanilistbot.Page
+import com.github.ghostbear.kotlinanilistbot.Response
+import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
+import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
+import com.github.ghostbear.kotlinanilistbot.interfaces.base.postRequest
 import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.entities.Message
 
@@ -40,14 +47,3 @@ abstract class MediaCommand: ICommand, GraphRequest() {
     }
 }
 
-class AnimeCommand: MediaCommand() {
-    override val mediaType: MediaType = MediaType.ANIME
-
-    override val pattern: Regex = Regex("^\\{.*}$")
-}
-
-class MangaCommand: MediaCommand() {
-    override val mediaType: MediaType = MediaType.MANGA
-
-    override val pattern: Regex = Regex("^<.*>")
-}

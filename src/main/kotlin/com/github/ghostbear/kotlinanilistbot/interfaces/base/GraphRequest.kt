@@ -1,18 +1,13 @@
-package com.github.ghostbear.kotlinanilistbot
+package com.github.ghostbear.kotlinanilistbot.interfaces.base
 
+import com.github.ghostbear.kotlinanilistbot.AniList
+import com.github.ghostbear.kotlinanilistbot.interfaces.IGraphRequest
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.jackson.responseObject
 import com.github.kittinunf.result.Result
-import com.taskworld.kraph.Kraph
-
-interface IGraphRequest {
-    val url: String
-    val header: HashMap<String, Any>
-    fun query(): Kraph
-}
 
 abstract class GraphRequest: IGraphRequest {
     override val url: String

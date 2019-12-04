@@ -1,4 +1,4 @@
-package com.github.ghostbear.kotlinanilistbot
+package com.github.ghostbear.kotlinanilistbot.interfaces
 
 import net.dv8tion.jda.api.entities.Message
 
