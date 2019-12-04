@@ -5,12 +5,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 
 class SearchListener : ListenerAdapter() {
 
-    private var commandChain: CommandChain
-
-    init {
-        commandChain = MediaCommand()
-        commandChain = CharacterCommand().chain(commandChain)
-    }
+    private var commands = arrayListOf<ICommand>(MangaCommand(), AnimeCommand(), CharacterCommand())
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
         val author = event.author
@@ -19,6 +14,12 @@ class SearchListener : ListenerAdapter() {
             return
         }
 
-        commandChain.execute(event.message)
+        val message = event.message
+
+        for (command in commands) {
+            if (command.matches(message)) {
+                command.execute(message)
+            }
+        }
     }
 }
