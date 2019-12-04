@@ -17,15 +17,16 @@ After that it will start the search by making a post call to AniList:s GraphQL A
 When it receive the response it is parsed and then a message will be created to reply to the user.
 
 ## Commands
-| Name      | Syntax        | Description                   | Example         |
-| :---      | :-----------: | :---------------------------: | :---            |
-| Anime     | {*text here*} | Used to search for media      | {*one piece*}   |
-| Manga     | <*text here*> |                               | <*one piece*>   |
-| Character | (*text here*) | Used to search for characters | (luffy)         |
+| Name      | Syntax            | Description                   | Example           |
+| :---      | :---------------: | :---------------------------: | :---              |
+| Anime     | {*text here*}     | Used to search for media      | {*one piece*}     |
+| Manga     | <*text here*>     |                               | <*one piece*>     |
+| Character | (*text here*)     | Used to search for characters | (luffy)           |
+| Staff     | \[*text here*\]   | Used to search for staff      | (eiichiro oda)    |
 
 ## TODO
 - [x] Add Media search
-- [ ] Add Staff search
+- [x] Add Staff search
 - [X] Add Character search
 - [ ] Add Studio search
 - [X] Use Design Pattern
