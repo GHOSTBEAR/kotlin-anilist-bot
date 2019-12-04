@@ -39,7 +39,7 @@ abstract class MediaCommand : ICommand, GraphRequest() {
                     .setColor(Color.decode(color))
                     .build()
             message.channel.sendMessage(embed).queue {
-                println("Message successfully sent ($url)")
+                println("[Media] Message successfully sent, media $title ($url)")
             }
         }
     }

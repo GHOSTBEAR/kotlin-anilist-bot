@@ -28,7 +28,7 @@ class StudioCommand : ICommand, GraphRequest() {
             val embed = EmbedBuilder().setAuthor(name, url)
                     .build()
             message.channel.sendMessage(embed).queue {
-                println("Message successfully sent ($url)")
+                println("[Studio] Message successfully sent, studio $name ($url)")
             }
         }
     }

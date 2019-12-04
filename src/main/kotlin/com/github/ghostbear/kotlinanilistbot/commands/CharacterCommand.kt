@@ -33,7 +33,7 @@ class CharacterCommand : ICommand, GraphRequest() {
                     .setThumbnail(image)
                     .build()
             message.channel.sendMessage(embed).queue {
-                println("Message successfully sent ($url)")
+                println("[Character] Message successfully sent, character $name ($url)")
             }
         }
 

@@ -33,7 +33,7 @@ class StaffCommand : ICommand, GraphRequest() {
                     .setThumbnail(image ?: "")
                     .build()
             message.channel.sendMessage(embed).queue {
-                println("Message successfully sent ($url)")
+                println("[Staff] Message successfully sent, staff $name ($url)")
             }
         }
     }
