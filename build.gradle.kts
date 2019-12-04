@@ -30,6 +30,7 @@ dependencies {
 	implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.0")
 	implementation("com.fasterxml.jackson.core:jackson-annotations:2.9.0")
 	implementation("com.taskworld.kraph:kraph:0.4.1")
+	implementation("org.jsoup:jsoup:1.12.1")
 }
 
 tasks.withType<KotlinCompile> {

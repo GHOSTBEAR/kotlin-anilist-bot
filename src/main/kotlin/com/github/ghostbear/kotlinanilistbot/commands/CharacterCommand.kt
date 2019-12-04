@@ -5,9 +5,10 @@ import com.github.ghostbear.kotlinanilistbot.Page
 import com.github.ghostbear.kotlinanilistbot.Response
 import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
 import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
-import com.github.ghostbear.kotlinanilistbot.interfaces.base.postRequest
 import com.taskworld.kraph.Kraph
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import org.jsoup.Jsoup
 
 class CharacterCommand: ICommand, GraphRequest() {
     private val parameters: HashMap<String, Any> = HashMap()
@@ -23,8 +24,15 @@ class CharacterCommand: ICommand, GraphRequest() {
 
         postRequest<Response<Page<Character>>> { request, response, result ->
             val character = result.get().data.page.list.first()
+            val name = character.name.full
             val url = character.siteUrl
-            message.channel.sendMessage("Here is what I found $url").queue {
+            val description = character.description
+            val image = character.image?.large
+            val embed = EmbedBuilder().setAuthor(name, url)
+                    .setDescription(Jsoup.parse(description).text())
+                    .setThumbnail(image)
+                    .build()
+            message.channel.sendMessage(embed).queue {
                 println("Message successfully sent ($url)")
             }
         }
@@ -36,7 +44,14 @@ class CharacterCommand: ICommand, GraphRequest() {
             query {
                 fieldObject("Page", mapOf("perPage" to 5)) {
                     fieldObject("characters", parameters) {
+                        fieldObject("name") {
+                            field("full")
+                        }
                         field("siteUrl")
+                        field("description")
+                        fieldObject("image") {
+                            field("large")
+                        }
                     }
                 }
             }

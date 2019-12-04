@@ -6,9 +6,11 @@ import com.github.ghostbear.kotlinanilistbot.Page
 import com.github.ghostbear.kotlinanilistbot.Response
 import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
 import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
-import com.github.ghostbear.kotlinanilistbot.interfaces.base.postRequest
 import com.taskworld.kraph.Kraph
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import org.jsoup.Jsoup
+import java.awt.Color
 
 abstract class MediaCommand: ICommand, GraphRequest() {
 
@@ -26,9 +28,17 @@ abstract class MediaCommand: ICommand, GraphRequest() {
 
         postRequest<Response<Page<Media>>> { _, _, result ->
             val media = result.get().data.page.list.first()
-            var url = media.siteUrl
-            val reply = "Here is what I found $url"
-            message.channel.sendMessage(reply).queue {
+            val title = media.title?.userPreferred
+            val url = media.siteUrl
+            val coverImage = media.coverImage?.large
+            val description = media.description
+            val color = media.coverImage?.color
+            val embed = EmbedBuilder().setAuthor(title, url)
+                    .setThumbnail(coverImage)
+                    .setDescription(Jsoup.parse(description).text())
+                    .setColor(Color.decode(color))
+                    .build()
+            message.channel.sendMessage(embed).queue {
                 println("Message successfully sent ($url)")
             }
         }
@@ -39,7 +49,16 @@ abstract class MediaCommand: ICommand, GraphRequest() {
             query {
                 fieldObject("Page", mapOf("perPage" to 5)) {
                     fieldObject("media", parameters) {
+                        fieldObject("title") {
+                            field("userPreferred")
+                        }
                         field("siteUrl")
+                        field("description")
+                        fieldObject("coverImage") {
+                            field("large")
+                            field("color")
+                        }
+
                     }
                 }
             }

@@ -5,9 +5,10 @@ import com.github.ghostbear.kotlinanilistbot.Response
 import com.github.ghostbear.kotlinanilistbot.Staff
 import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
 import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
-import com.github.ghostbear.kotlinanilistbot.interfaces.base.postRequest
 import com.taskworld.kraph.Kraph
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import org.jsoup.Jsoup
 
 class StaffCommand : ICommand, GraphRequest() {
     private val parameters: HashMap<String, Any> = HashMap()
@@ -23,9 +24,15 @@ class StaffCommand : ICommand, GraphRequest() {
 
         postRequest<Response<Page<Staff>>> { _, _, result ->
             val staff = result.get().data.page.list.first()
-            var url = staff.siteUrl
-            val reply = "Here is what I found $url"
-            message.channel.sendMessage(reply).queue {
+            val name = staff.name.full
+            val url = staff.siteUrl
+            val description = staff.description
+            val image = staff.image?.large
+            val embed = EmbedBuilder().setAuthor(name, url)
+                    .setDescription(if (!description.isNullOrEmpty()) Jsoup.parse(description).text() else "No description")
+                    .setThumbnail(image?: "")
+                    .build()
+            message.channel.sendMessage(embed).queue {
                 println("Message successfully sent ($url)")
             }
         }
@@ -36,7 +43,14 @@ class StaffCommand : ICommand, GraphRequest() {
             query {
                 fieldObject("Page", mapOf("perPage" to 5)) {
                     fieldObject("staff", parameters) {
+                        fieldObject("name") {
+                            field("full")
+                        }
                         field("siteUrl")
+                        field("description")
+                        fieldObject("image") {
+                            field("large")
+                        }
                     }
                 }
             }

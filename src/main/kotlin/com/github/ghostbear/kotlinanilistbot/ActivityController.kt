@@ -1,34 +1,33 @@
 package com.github.ghostbear.kotlinanilistbot
 
-import com.github.kittinunf.fuel.httpPost
-import com.github.kittinunf.fuel.jackson.responseObject
+import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
 import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import kotlin.concurrent.thread
 
-class ActivityController(jda: JDA) {
+class ActivityController(jda: JDA): GraphRequest() {
 
-    var list: List<Media>? = null
+    var list: List<Media> = emptyList()
 
     init {
-        "https://graphql.anilist.co/".httpPost().header("content-type" to "application/json", "Accept" to "application/json")
-                .body(query())
-                .responseObject<Response<Page<Media>>> { _, _, result ->
-                    result.get().data.page.list
+        val thread = thread {
+            while (true) {
+                if (list.isNotEmpty()) {
+                    jda.presence.activity = Activity.watching(list.random().title?.userPreferred!!)
+                    Thread.sleep(1_200_000)
                 }
-
-        thread(start = true) {
-            while(true) {
-                jda.presence.activity = list?.let {
-                    Activity.watching(it.random().title?.userPreferred!!)
-                }
-                Thread.sleep(1_200_000)
+                Thread.sleep(100)
             }
+        }
+
+        postRequest<Response<Page<Media>>> { _, _, result ->
+            list = result.get().data.page.list
+            thread.start()
         }
     }
 
-    fun query(): String {
+    override fun query(): Kraph {
         return Kraph {
             query {
                 fieldObject("Page", mapOf("perPage" to 50)) {
@@ -41,6 +40,6 @@ class ActivityController(jda: JDA) {
                     }
                 }
             }
-        }.toRequestString()
+        }
     }
 }

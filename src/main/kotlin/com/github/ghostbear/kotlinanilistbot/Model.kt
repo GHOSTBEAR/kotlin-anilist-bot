@@ -42,19 +42,41 @@ data class Media(
         @JsonProperty("id") var id: Int? = -1,
         @JsonProperty("type") var type: MediaType? = MediaType.ANIME,
         @JsonProperty("title") var title: Title?,
-        @JsonProperty("siteUrl") var siteUrl: String?
+        @JsonProperty("siteUrl") var siteUrl: String?,
+        @JsonProperty("description") var description: String?,
+        @JsonProperty("coverImage") var coverImage: CoverImage?
 )
 
 data class Character(
-        @JsonProperty("siteUrl") var siteUrl: String?
+        @JsonProperty("name") var name: Name,
+        @JsonProperty("siteUrl") var siteUrl: String?,
+        @JsonProperty("description") var description: String?,
+        @JsonProperty("image") var image: Image?
 )
 
 data class Staff(
-        @JsonProperty("siteUrl") var siteUrl: String?
+        @JsonProperty("name") var name: Name,
+        @JsonProperty("siteUrl") var siteUrl: String?,
+        @JsonProperty("description") var description: String?,
+        @JsonProperty("image") var image: Image?
 )
 
 data class Studio(
+        @JsonProperty("name") var name: String,
         @JsonProperty("siteUrl") var siteUrl: String?
+)
+
+data class Name(
+        @JsonProperty("full") var full: String
+)
+
+data class Image(
+        @JsonProperty("large") var large: String?
+)
+
+data class CoverImage(
+        @JsonProperty("large") var large: String?,
+        @JsonProperty("color")var color: String?
 )
 
 data class Title(

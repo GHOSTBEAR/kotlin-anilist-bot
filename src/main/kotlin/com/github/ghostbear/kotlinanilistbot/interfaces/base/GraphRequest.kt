@@ -15,8 +15,8 @@ abstract class GraphRequest: IGraphRequest {
 
     override val header: HashMap<String, Any>
         get() = AniList.headers
-}
 
-inline fun <reified T : Any> IGraphRequest.postRequest(noinline handler: (Request, Response, Result<T, FuelError>) -> Unit) {
-    return this.url.httpPost().header(header).body(query().toRequestString()).responseObject<T>(handler::invoke)
+    inline fun <reified T : Any> postRequest(noinline handler: (Request, Response, Result<T, FuelError>) -> Unit) {
+        return this.url.httpPost().header(header).body(query().toRequestString()).responseObject<T>(handler::invoke)
+    }
 }
