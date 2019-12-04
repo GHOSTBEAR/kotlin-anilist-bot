@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import kotlin.concurrent.thread
 
-class ActivityController(jda: JDA): GraphRequest() {
+class ActivityController(jda: JDA) : GraphRequest() {
 
     var list: List<Media> = emptyList()
 
@@ -28,16 +28,12 @@ class ActivityController(jda: JDA): GraphRequest() {
     }
 
     override fun query(): Kraph {
-        return Kraph {
-            query {
-                fieldObject("Page", mapOf("perPage" to 50)) {
-                    fieldObject("media", mapOf("sort" to MediaSort.POPULARITY_DESC, "season" to MediaSeason.FALL, "seasonYear" to 2019)) {
-                        field("id")
-                        field("type")
-                        fieldObject("title") {
-                            field("userPreferred")
-                        }
-                    }
+        return pagedQuery {
+            fieldObject("media", mapOf("sort" to MediaSort.POPULARITY_DESC, "season" to MediaSeason.FALL, "seasonYear" to 2019)) {
+                field("id")
+                field("type")
+                fieldObject("title") {
+                    field("userPreferred")
                 }
             }
         }

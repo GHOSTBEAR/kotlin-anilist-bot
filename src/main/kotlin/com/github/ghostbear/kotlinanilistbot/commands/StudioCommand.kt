@@ -9,7 +9,7 @@ import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 
-class StudioCommand: ICommand, GraphRequest() {
+class StudioCommand : ICommand, GraphRequest() {
     private val parameters: HashMap<String, Any> = HashMap()
 
     override val pattern: Regex = Regex("^>.*<$")
@@ -34,14 +34,10 @@ class StudioCommand: ICommand, GraphRequest() {
     }
 
     override fun query(): Kraph {
-        return Kraph {
-            query {
-                fieldObject("Page", mapOf("perPage" to 5)) {
-                    fieldObject("studios", parameters) {
-                        field("name")
-                        field("siteUrl")
-                    }
-                }
+        return pagedQuery {
+            fieldObject("studios", parameters) {
+                field("name")
+                field("siteUrl")
             }
         }
     }

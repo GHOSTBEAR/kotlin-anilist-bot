@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.Message
 import org.jsoup.Jsoup
 import java.awt.Color
 
-abstract class MediaCommand: ICommand, GraphRequest() {
+abstract class MediaCommand : ICommand, GraphRequest() {
 
     abstract val mediaType: MediaType
 
@@ -45,22 +45,18 @@ abstract class MediaCommand: ICommand, GraphRequest() {
     }
 
     override fun query(): Kraph {
-        return Kraph {
-            query {
-                fieldObject("Page", mapOf("perPage" to 5)) {
-                    fieldObject("media", parameters) {
-                        fieldObject("title") {
-                            field("userPreferred")
-                        }
-                        field("siteUrl")
-                        field("description")
-                        fieldObject("coverImage") {
-                            field("large")
-                            field("color")
-                        }
-
-                    }
+        return pagedQuery {
+            fieldObject("media", parameters) {
+                fieldObject("title") {
+                    field("userPreferred")
                 }
+                field("siteUrl")
+                field("description")
+                fieldObject("coverImage") {
+                    field("large")
+                    field("color")
+                }
+
             }
         }
     }

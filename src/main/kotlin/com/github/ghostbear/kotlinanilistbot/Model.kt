@@ -10,20 +10,20 @@ data class Data<T>(
         @JsonProperty("Page") var page: T
 )
 
-data class Page<T: Any>(
+data class Page<T : Any>(
         private @JsonProperty("media") var media: List<T>?,
         private @JsonProperty("characters") var characters: List<T>?,
         private @JsonProperty("staff") var staff: List<T>?,
         private @JsonProperty("studios") var studios: List<T>?
 ) {
     val list: List<T>
-    get() {
-        media?.let { return it }
-        characters?.let { return it }
-        staff?.let { return it }
-        studios?.let { return it }
-        return emptyList()
-    }
+        get() {
+            media?.let { return it }
+            characters?.let { return it }
+            staff?.let { return it }
+            studios?.let { return it }
+            return emptyList()
+        }
 }
 
 enum class MediaType {
@@ -76,7 +76,7 @@ data class Image(
 
 data class CoverImage(
         @JsonProperty("large") var large: String?,
-        @JsonProperty("color")var color: String?
+        @JsonProperty("color") var color: String?
 )
 
 data class Title(

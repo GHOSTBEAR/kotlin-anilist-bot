@@ -30,7 +30,7 @@ class StaffCommand : ICommand, GraphRequest() {
             val image = staff.image?.large
             val embed = EmbedBuilder().setAuthor(name, url)
                     .setDescription(if (!description.isNullOrEmpty()) Jsoup.parse(description).text() else "No description")
-                    .setThumbnail(image?: "")
+                    .setThumbnail(image ?: "")
                     .build()
             message.channel.sendMessage(embed).queue {
                 println("Message successfully sent ($url)")
@@ -39,19 +39,15 @@ class StaffCommand : ICommand, GraphRequest() {
     }
 
     override fun query(): Kraph {
-        return Kraph {
-            query {
-                fieldObject("Page", mapOf("perPage" to 5)) {
-                    fieldObject("staff", parameters) {
-                        fieldObject("name") {
-                            field("full")
-                        }
-                        field("siteUrl")
-                        field("description")
-                        fieldObject("image") {
-                            field("large")
-                        }
-                    }
+        return pagedQuery {
+            fieldObject("staff", parameters) {
+                fieldObject("name") {
+                    field("full")
+                }
+                field("siteUrl")
+                field("description")
+                fieldObject("image") {
+                    field("large")
                 }
             }
         }

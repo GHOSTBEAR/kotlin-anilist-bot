@@ -6,34 +6,34 @@ import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
-class Application: ListenerAdapter() {
+class Application : ListenerAdapter() {
 
-	private var commands = arrayListOf<ICommand>(MangaCommand(), AnimeCommand(), CharacterCommand(), StaffCommand(), StudioCommand())
+    private var commands = arrayListOf<ICommand>(MangaCommand(), AnimeCommand(), CharacterCommand(), StaffCommand(), StudioCommand())
 
-	override fun onMessageReceived(event: MessageReceivedEvent) {
-		val author = event.author
+    override fun onMessageReceived(event: MessageReceivedEvent) {
+        val author = event.author
 
-		if (author.isBot) {
-			return
-		}
+        if (author.isBot) {
+            return
+        }
 
-		val message = event.message
+        val message = event.message
 
-		for (command in commands) {
-			if (command.matches(message)) {
-				command.execute(message)
-				break
-			}
-		}
-	}
+        for (command in commands) {
+            if (command.matches(message)) {
+                command.execute(message)
+                break
+            }
+        }
+    }
 }
 
 fun main() {
-	val key = System.getenv("DISCORD_KEY")
+    val key = System.getenv("DISCORD_KEY")
 
-	val jda = JDABuilder(key)
-			.addEventListeners(Application())
-			.build()
+    val jda = JDABuilder(key)
+            .addEventListeners(Application())
+            .build()
 
-	ActivityController(jda)
+    ActivityController(jda)
 }

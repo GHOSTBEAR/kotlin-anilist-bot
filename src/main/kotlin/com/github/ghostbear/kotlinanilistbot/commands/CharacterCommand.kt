@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.jsoup.Jsoup
 
-class CharacterCommand: ICommand, GraphRequest() {
+class CharacterCommand : ICommand, GraphRequest() {
     private val parameters: HashMap<String, Any> = HashMap()
 
     override val pattern: Regex = Regex("^\\(.*\\)$")
@@ -40,19 +40,15 @@ class CharacterCommand: ICommand, GraphRequest() {
     }
 
     override fun query(): Kraph {
-        return Kraph {
-            query {
-                fieldObject("Page", mapOf("perPage" to 5)) {
-                    fieldObject("characters", parameters) {
-                        fieldObject("name") {
-                            field("full")
-                        }
-                        field("siteUrl")
-                        field("description")
-                        fieldObject("image") {
-                            field("large")
-                        }
-                    }
+        return pagedQuery {
+            fieldObject("characters", parameters) {
+                fieldObject("name") {
+                    field("full")
+                }
+                field("siteUrl")
+                field("description")
+                fieldObject("image") {
+                    field("large")
                 }
             }
         }
