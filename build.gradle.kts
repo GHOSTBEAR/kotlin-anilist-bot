@@ -1,9 +1,10 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("application")
-	kotlin("kapt") version "1.3.50"
 	kotlin("jvm") version "1.3.50"
+	id("com.github.johnrengelman.shadow") version "4.0.4"
 }
 
 application {
@@ -33,15 +34,25 @@ dependencies {
 	implementation("org.jsoup:jsoup:1.12.1")
 }
 
+tasks {
+	named<ShadowJar>("shadowJar") {
+		archiveBaseName.set("shadow")
+		mergeServiceFiles()
+		manifest {
+			attributes(mapOf("Main-Class" to application.mainClassName))
+		}
+	}
+}
+
+tasks {
+	build {
+		dependsOn(shadowJar)
+	}
+}
+
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "1.8"
-	}
-}
-
-tasks.withType<Jar>() {
-	configurations["compileClasspath"].forEach { file: File ->
-		from(zipTree(file.absoluteFile))
 	}
 }

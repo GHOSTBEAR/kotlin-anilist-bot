@@ -30,6 +30,9 @@ abstract class GraphRequest : IGraphRequest {
     }
 
     inline fun <reified T : Any> postRequest(noinline handler: (Request, Response, Result<T, FuelError>) -> Unit) {
-        return this.url.httpPost().header(header).body(query().toRequestString()).responseObject<T>(handler::invoke)
+        return this.url.httpPost().header(header).body(query().toRequestString()).responseObject<T> { request, response, result ->
+            println(request)
+            println(response)
+            handler.invoke(request, response, result) }
     }
 }

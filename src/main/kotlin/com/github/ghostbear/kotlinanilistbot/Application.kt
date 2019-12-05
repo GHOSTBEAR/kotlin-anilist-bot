@@ -19,8 +19,11 @@ class Application : ListenerAdapter() {
 
         val message = event.message
 
+        println("[Application] onMessageReceived")
+
         for (command in commands) {
             if (command.matches(message)) {
+                println("[Application] Found command, executing...")
                 command.execute(message)
                 break
             }

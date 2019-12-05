@@ -31,4 +31,4 @@ When it receive the response it is parsed and then a message will be created to 
 - [X] Add Character search
 - [x] Add Studio search
 - [X] Use Design Pattern
-- [ ] Docker
+- [X] Docker
