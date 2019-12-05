@@ -2,13 +2,15 @@
 This Discord bot is based on how Roboragi detects content searches. 
 It uses AniList to search for media, characters, staffs,  and studios.
 
-## Getting Started
+## Getting Started (without Docker)
+1. Set DISCORD_KEY=<your_key_here> as a enviroment variable
+2. Build project `gradle build` or `./gradlew build`
+3. Run project `gradle run`
 
-### Set Enviroment Variable
-DISCORD_KEY=<YOUR_KEY>
-
-### Gradle
-To build the project use `gradle build` and to run it use `gradle run`.
+## Docker
+1. Build project `gradle build` or `./gradlew build`
+2. Build image `docker build -t kotlin-anilist-bot .`
+3. Run image `docker run --env DISCORD_KEY=<your_key_here> kotlin-anilist-bot`
 
 ## Behavior
 When a message is sent the bot looks if the message starts with (<, {) and ends with (>, }).
