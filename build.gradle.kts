@@ -29,7 +29,10 @@ dependencies {
 	}
 	implementation("com.github.kittinunf.fuel:fuel:1.3.1")
 	implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.0")
-	implementation("com.fasterxml.jackson.core:jackson-annotations:2.9.0")
+	implementation("com.fasterxml.jackson.core:jackson-annotations:2.9.9")
+	implementation("com.fasterxml.jackson.core:jackson-core:2.9.9")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.9.9")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9")
 	implementation("com.taskworld.kraph:kraph:0.4.1")
 	implementation("org.jsoup:jsoup:1.12.1")
 }

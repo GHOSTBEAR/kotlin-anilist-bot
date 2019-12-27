@@ -1,5 +1,8 @@
 package com.github.ghostbear.kotlinanilistbot.interfaces.base
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.ghostbear.kotlinanilistbot.AniList
 import com.github.ghostbear.kotlinanilistbot.interfaces.IGraphRequest
 import com.github.kittinunf.fuel.core.FuelError
@@ -30,7 +33,8 @@ abstract class GraphRequest : IGraphRequest {
     }
 
     inline fun <reified T : Any> postRequest(noinline handler: (Request, Response, Result<T, FuelError>) -> Unit) {
-        return this.url.httpPost().header(header).body(query().toRequestString()).responseObject<T> { request, response, result ->
-            handler.invoke(request, response, result) }
+        val mapper = ObjectMapper().registerKotlinModule()
+                .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true)
+        return this.url.httpPost().header(header).body(query().toRequestString()).responseObject<T>(mapper, handler::invoke)
     }
 }

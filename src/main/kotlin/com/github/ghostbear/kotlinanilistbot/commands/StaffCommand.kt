@@ -1,6 +1,5 @@
 package com.github.ghostbear.kotlinanilistbot.commands
 
-import com.github.ghostbear.kotlinanilistbot.Page
 import com.github.ghostbear.kotlinanilistbot.Response
 import com.github.ghostbear.kotlinanilistbot.Staff
 import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
@@ -22,30 +21,36 @@ class StaffCommand : ICommand, GraphRequest() {
 
         parameters.put("search", context)
 
-        postRequest<Response<Page<Staff>>> { _, _, result ->
-            val staff = result.get().data.page.list.first()
-            val name = staff.name.full
-            val url = staff.siteUrl
-            val description = staff.description
-            val image = staff.image?.large
-            val embed = EmbedBuilder().setAuthor(name, url)
-                    .setDescription(if (!description.isNullOrEmpty()) Jsoup.parse(description).text() else "No description")
-                    .setThumbnail(image ?: "")
+        postRequest<Response<Staff>> { _, _, result ->
+            val data = result.get().data
+
+            var name = data.name.first
+            if (data.name.last != null) {
+                name += " ${data.name.last}"
+            }
+
+            val embed = EmbedBuilder().setAuthor(name, data.siteUrl)
+                    .setDescription(if (!data.description.isNullOrEmpty()) Jsoup.parse(data.description).text() else "No description")
+                    .setThumbnail(data.image.large ?: "")
                     .build()
-            sendMessage(message.channel, embed, "[Staff] Message successfully sent, staff $name ($url)")
+            sendMessage(message.channel, embed, "[Staff] Message successfully sent")
         }
     }
 
     override fun query(): Kraph {
-        return pagedQuery {
-            fieldObject("staff", parameters) {
-                fieldObject("name") {
-                    field("full")
-                }
-                field("siteUrl")
-                field("description")
-                fieldObject("image") {
-                    field("large")
+        return Kraph {
+            query {
+                fieldObject("Staff", parameters) {
+                    field("id")
+                    field("siteUrl")
+                    fieldObject("name") {
+                        field("first")
+                        field("last")
+                    }
+                    fieldObject("image") {
+                        field("large")
+                    }
+                    field("description")
                 }
             }
         }

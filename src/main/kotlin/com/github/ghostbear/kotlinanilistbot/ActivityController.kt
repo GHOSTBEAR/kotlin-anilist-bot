@@ -14,7 +14,7 @@ class ActivityController(jda: JDA) : GraphRequest() {
         val thread = thread {
             while (true) {
                 if (list.isNotEmpty()) {
-                    jda.presence.activity = Activity.watching(list.random().title?.userPreferred!!)
+                    jda.presence.activity = Activity.watching(list.random().title?.romaji!!)
                     Thread.sleep(1_200_000)
                 }
                 Thread.sleep(100)
@@ -22,7 +22,7 @@ class ActivityController(jda: JDA) : GraphRequest() {
         }
 
         postRequest<Response<Page<Media>>> { _, _, result ->
-            list = result.get().data.page.list
+            list = result.get().data.list
             thread.start()
         }
     }
@@ -30,10 +30,8 @@ class ActivityController(jda: JDA) : GraphRequest() {
     override fun query(): Kraph {
         return pagedQuery {
             fieldObject("media", mapOf("sort" to MediaSort.POPULARITY_DESC, "season" to MediaSeason.FALL, "seasonYear" to 2019)) {
-                field("id")
-                field("type")
                 fieldObject("title") {
-                    field("userPreferred")
+                    field("romaji")
                 }
             }
         }

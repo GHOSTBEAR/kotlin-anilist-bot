@@ -2,7 +2,6 @@ package com.github.ghostbear.kotlinanilistbot.commands.base
 
 import com.github.ghostbear.kotlinanilistbot.Media
 import com.github.ghostbear.kotlinanilistbot.MediaType
-import com.github.ghostbear.kotlinanilistbot.Page
 import com.github.ghostbear.kotlinanilistbot.Response
 import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
 import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
@@ -26,35 +25,35 @@ abstract class MediaCommand : ICommand, GraphRequest() {
         parameters.put("search", context)
         parameters.put("type", mediaType)
 
-        postRequest<Response<Page<Media>>> { _, _, result ->
-            val media = result.get().data.page.list.first()
-            val title = media.title?.userPreferred
-            val url = media.siteUrl
-            val coverImage = media.coverImage?.large
-            val description = media.description
-            val color = media.coverImage?.color
-            val embed = EmbedBuilder().setAuthor(title, url)
-                    .setThumbnail(coverImage)
-                    .setDescription(Jsoup.parse(description).text())
-                    .setColor(Color.decode(color))
+        postRequest<Response<Media>> { _, _, result ->
+            println("Got a response!")
+            val data = result.get().data
+            val embed = EmbedBuilder().setAuthor(data.title?.romaji, data.siteUrl)
+                    .setThumbnail(data.coverImage?.large)
+                    .setDescription(Jsoup.parse(data.description).text())
+                    .setColor(Color.decode(data.coverImage?.color))
                     .build()
-            sendMessage(message.channel, embed, "[Media] Message successfully sent, media $title ($url)")
+            sendMessage(message.channel, embed, "[Media] Message successfully sent")
         }
     }
 
     override fun query(): Kraph {
-        return pagedQuery {
-            fieldObject("media", parameters) {
-                fieldObject("title") {
-                    field("userPreferred")
+        return Kraph {
+            query {
+                fieldObject("Media", parameters) {
+                    field("id")
+                    field("siteUrl")
+                    fieldObject("title") {
+                        field("romaji")
+                    }
+                    fieldObject("coverImage") {
+                        field("large")
+                        field("color")
+                    }
+                    field("status")
+                    field("description")
+                    field("averageScore")
                 }
-                field("siteUrl")
-                field("description")
-                fieldObject("coverImage") {
-                    field("large")
-                    field("color")
-                }
-
             }
         }
     }

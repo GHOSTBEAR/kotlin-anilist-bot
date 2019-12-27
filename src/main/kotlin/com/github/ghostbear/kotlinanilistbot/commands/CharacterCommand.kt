@@ -1,7 +1,6 @@
 package com.github.ghostbear.kotlinanilistbot.commands
 
 import com.github.ghostbear.kotlinanilistbot.Character
-import com.github.ghostbear.kotlinanilistbot.Page
 import com.github.ghostbear.kotlinanilistbot.Response
 import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
 import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
@@ -22,31 +21,37 @@ class CharacterCommand : ICommand, GraphRequest() {
 
         parameters.put("search", context)
 
-        postRequest<Response<Page<Character>>> { request, response, result ->
-            val character = result.get().data.page.list.first()
-            val name = character.name.full
-            val url = character.siteUrl
-            val description = character.description
-            val image = character.image?.large
-            val embed = EmbedBuilder().setAuthor(name, url)
-                    .setDescription(Jsoup.parse(description).text())
-                    .setThumbnail(image)
+        postRequest<Response<Character>> { request, response, result ->
+            val data = result.get().data
+
+            var name = data.name.first
+            if (data.name.last != null) {
+                name += " ${data.name.last}"
+            }
+
+            val embed = EmbedBuilder().setAuthor(name, data.siteUrl)
+                    .setDescription(Jsoup.parse(data.description).text())
+                    .setThumbnail(data.image.large)
                     .build()
-            sendMessage(message.channel, embed, "[Character] Message successfully sent, character $name ($url)")
+            sendMessage(message.channel, embed, "[Character] Message successfully sent")
         }
 
     }
 
     override fun query(): Kraph {
-        return pagedQuery {
-            fieldObject("characters", parameters) {
-                fieldObject("name") {
-                    field("full")
-                }
-                field("siteUrl")
-                field("description")
-                fieldObject("image") {
-                    field("large")
+        return Kraph {
+            query {
+                fieldObject("Character", parameters) {
+                    field("id")
+                    field("siteUrl")
+                    fieldObject("name") {
+                        field("first")
+                        field("last")
+                    }
+                    fieldObject("image") {
+                        field("large")
+                    }
+                    field("description")
                 }
             }
         }
