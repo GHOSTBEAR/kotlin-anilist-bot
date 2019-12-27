@@ -1,6 +1,7 @@
 package com.github.ghostbear.kotlinanilistbot
 
 import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
+import com.github.ghostbear.kotlinanilistbot.model.*
 import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity

@@ -1,10 +1,10 @@
 package com.github.ghostbear.kotlinanilistbot.commands
 
-import com.github.ghostbear.kotlinanilistbot.MediaSort
-import com.github.ghostbear.kotlinanilistbot.Response
-import com.github.ghostbear.kotlinanilistbot.Studio
 import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
 import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
+import com.github.ghostbear.kotlinanilistbot.model.MediaSort
+import com.github.ghostbear.kotlinanilistbot.model.Response
+import com.github.ghostbear.kotlinanilistbot.model.Studio
 import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message

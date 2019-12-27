@@ -1,9 +1,9 @@
 package com.github.ghostbear.kotlinanilistbot.commands
 
-import com.github.ghostbear.kotlinanilistbot.Character
-import com.github.ghostbear.kotlinanilistbot.Response
 import com.github.ghostbear.kotlinanilistbot.interfaces.ICommand
 import com.github.ghostbear.kotlinanilistbot.interfaces.base.GraphRequest
+import com.github.ghostbear.kotlinanilistbot.model.Character
+import com.github.ghostbear.kotlinanilistbot.model.Response
 import com.taskworld.kraph.Kraph
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
@@ -21,7 +21,7 @@ class CharacterCommand : ICommand, GraphRequest() {
 
         parameters.put("search", context)
 
-        postRequest<Response<Character>> { request, response, result ->
+        postRequest<Response<Character>> { _, _, result ->
             val data = result.get().data
 
             var name = data.name.first
